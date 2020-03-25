@@ -46,6 +46,10 @@ function calc_where(key, str) {
   const len=Math.min(old.length, str.length)
   let cur=0
   for(; cur<len && old.charAt(cur)===str.charAt(cur); cur++);
+  const lstr=str.substr(Math.max(cur-20, 0), cur)
+  cur-=lstr.match(/<[a-z\d]+$|$/i)[0].length
+  const rstr=str.substr(cur-1, Math.min(str.length-cur, 20))
+  cur+=rstr.match(/^<\/[a-z\d]+>|$/i)[0].length
   return str.substr(0, cur)+'<i data-cur></i>'+str.substr(cur, str.length)
 }
 $(document).on('click', [1,2,3,4,5,6].map(a=>'.titles h'+a).join(','), function() {
@@ -99,7 +103,7 @@ $(document).on('click', '.save', async _=>{
   try{
     $('.pad-div')[0].scrollTop+=$('[data-cur]').offset().top-$('.pad-div').offset().top-$('.pad-div').height()/2
     const p=$('[data-cur]').parent()
-    if(!p.hasClass('focusit')) {
+    if(!p.hasClass('focusit') && !p.is('code')) {
       p.addClass('focusit')
       setTimeout(_=>p.removeClass('focusit'), 1e3)
     }
@@ -111,7 +115,11 @@ $(document).on('click', '.save', async _=>{
 function hl_code(codes) {
   codes.map(function() {
     (this.className+'').replace(/^language-([a-z\d]+)/, (_, lan)=>{
-      $(this).html(hljs.highlight(lan, this.innerText).value).addClass('hljs')
+      let hls=this.innerText
+      try{
+        hls=hljs.highlight(lan, this.innerText).value
+      }catch(e) {}
+      $(this).html(hls).addClass('hljs')
     })
   })
 }

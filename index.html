@@ -32,13 +32,13 @@ async function lesscss(src) {
   const less=require('less')
   const css=(await less.render(await fread(src))).css
   const autoprefixer=require('autoprefixer')
-  return autoprefixer.process(css).then(({css})=>css)
+  return autoprefixer.process(css, {from: undefined}).then(({css})=>css)
 }
 const fstat=fn=>new Promise(r=>fs.lstat(fn, (e, b)=>r(b)))
 const fread=fn=>new Promise(r=>fs.readFile(fn, 'utf8', (e, b)=>r(e? '': b)))
 const fwrite=(fn, data)=>new Promise(r=>fs.writeFile(fn, data, _=>r()))
 const queryfn2fn=fn=>md5(decodeURIComponent(fn)).substr(0, 16)
-const fetchfn=_=>__dirname+'/'+queryfn2fn(query.fetch)+'.md'
+const fetchfn=_=>BOOK_DIR+'/'+queryfn2fn(query.fetch)+'.md'
 const NO_TITLE='暂无标题'
 const NO_CONTENT='暂无说明'
 
