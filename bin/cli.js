@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const simplebook=require('..')
 const openurl=require('openurl')
 const fs=require('fs')
