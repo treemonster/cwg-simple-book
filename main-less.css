@@ -243,6 +243,12 @@ h2,h3{
   &:hover{
     opacity: .9;
   }
+  &.ro{
+    cursor: auto;
+  }
+  &.ro:hover{
+    opacity: 1;
+  }
 }
 .titles{
   width: 260px;
@@ -440,3 +446,13 @@ h2,h3{
 }
 
 
+.readonly-tag{
+    color: #ccc;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 10px 20px;
+    pointer-events: none;
+    text-shadow: 0 0 2px #aaa;
+    letter-spacing: 3px;
+}

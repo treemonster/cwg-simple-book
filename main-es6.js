@@ -66,7 +66,7 @@ $(document).on('click', '[data-svid]', async function() {
     alert('网络错误')
   }
 })
-$(document).on('click', '.title', function() {
+$(document).on('click', '.title:not(.ro)', function() {
   showpanel('大标题', datas.bigtitle, 'bigtitle', 'bigtitle')
 })
 $(document).on('click', '.edit-title-btn', function() {

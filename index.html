@@ -47,8 +47,10 @@ if(query.act==='read') {
   return
 }
 if(query.act==='write') {
-  await fwrite(fetchfn(), decodeURIComponent(postbody))
-  echo(marked(await fread(fetchfn())))
+  if(READWRITE) {
+    await fwrite(fetchfn(), decodeURIComponent(postbody))
+    echo(marked(await fread(fetchfn())))
+  }else echo('READONLY')
   return
 }
 if(query.act==='call_svid') {
@@ -94,16 +96,20 @@ echo('window.DATAS='+JSON.stringify({
 echo(await es5js(__dirname+'/main-es6.js'))
 ?>
 </script>
-<div class="title bigtitle"><?js echo(marked(datas.bigtitle)) ?></div>
+<div class="title bigtitle <?js if(!READWRITE) echo('ro') ?>"><?js echo(marked(datas.bigtitle)) ?></div>
 <div class="titles">
+  <?js if(READWRITE) { ?>
   <div class="edit-btn edit-title-btn">编辑</div>
+  <?js } ?>
   <div class="titles-list">
     <?js echo(marked(datas.titles)) ?>
   </div>
 </div>
 <?js if(query.view) { ?>
 <div class="content">
+  <?js if(READWRITE) { ?>
   <div class="edit-btn edit-content-btn">编辑</div>
+  <?js } ?>
   <div class="the-title"><?js echo(decodeURIComponent(query.view||'')) ?></div>
   <div class="content-panel"><?js echo(marked(datas.subs[decodeURIComponent(query.view)])) ?></div>
 </div>
@@ -121,3 +127,6 @@ echo(await es5js(__dirname+'/main-es6.js'))
     </div>
   </div>
 </div>
+<?js if(!READWRITE) { ?>
+<div class="readonly-tag">-- READONLY --</div>
+<?js } ?>

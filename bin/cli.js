@@ -6,8 +6,8 @@ const fs=require('fs')
 
 const args={}
 process.argv.slice(2).map(arg=>{
-  arg.replace(/^--(.+?)=(.+)$/,(_, k, v)=>{
-    args[k.toUpperCase()]=v
+  arg.replace(/^--(.+?)(?:=(.+))*$/,(_, k, v)=>{
+    args[k.toUpperCase()]=v||true
   })
 })
 
@@ -27,7 +27,7 @@ const mkfile=(fn, str)=>{
 const SVID_STR=`<?js
 const apis={}
 
-apis.readpackage=async _=>{
+apis.helo=async _=>{
   return {
     msg: 'helo',
     ok: !0,
@@ -39,7 +39,7 @@ module.exports=async svid=> {
 }`
 
 try{
-  const {DIR, PORT, OPEN}=args
+  const {DIR, PORT, OPEN, READWRITE}=args
   if(!DIR) throw new Error('没有填写文件目录')
   mkdir(DIR)
   mkdir(DIR+'/md')
@@ -48,6 +48,7 @@ try{
   simplebook({
     SVID_HTML: DIR+'/svid.html',
     BOOK_DIR: DIR+'/md',
+    READWRITE,
     port: PORT,
   }).then(url=>{
     if(OPEN) openurl.open(url)
