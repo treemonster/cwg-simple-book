@@ -76,7 +76,7 @@ await Promise.all(list.map(async fn=>{
 
 if((headers['user-agent']+'').match(/\bcurl\//i)) {
   if(!query.i) {
-    echo(list.map((a, i)=>i+' '+a).join('\n'))
+    echo(list.map((a, i)=>i+' '+a+' ('+datas.subs[a].length+')').join('\n'))
   }else{
     echo(datas.subs[list[query.i]])
   }
