@@ -284,6 +284,10 @@ h2,h3{
   margin: 0 0 0 10px;
   padding: 10px 5px;
   text-align: left;
+  &.active{
+    background: #eee;
+    color: #111;
+  }
 }
 
 .edit{

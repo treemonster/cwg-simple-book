@@ -52,7 +52,17 @@ function calc_where(key, str) {
   cur+=rstr.match(/^<\/[a-z\d]+>|$/i)[0].length
   return str.substr(0, cur)+'<i data-cur></i>'+str.substr(cur, str.length)
 }
+function updatescroll(set) {
+  try{
+    if(set) {
+      localStorage.setItem('lt', $('.titles')[0].scrollTop)
+    }else{
+      $('.titles')[0].scrollTop=localStorage.getItem('lt')-0
+    }
+  }catch(e) {}
+}
 $(document).on('click', [1,2,3,4,5,6].map(a=>'.titles h'+a).join(','), function() {
+  updatescroll(1)
   location='?view='+encodeURIComponent($(this).html())
   return false
 })
@@ -126,6 +136,13 @@ function hl_code(codes) {
 $(_=>{
   updatebigtitle()
   updatebtns()
+  for(let r=$('.titles-list *'), i=r.length; i--; ) {
+    const ri=$(r[i])
+    if(ri.html()!=editfn) continue
+    ri.addClass('active')
+    break
+  }
+  updatescroll()
 })
 $(window).on('resize', _=>updatebigtitle())
 hljs.initHighlightingOnLoad()
