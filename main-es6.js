@@ -111,12 +111,14 @@ $(document).on('click', '.save', async _=>{
   if(!fixstr) return;
   $('.pad-div').html(fixstr)
   try{
-    $('.pad-div')[0].scrollTop+=$('[data-cur]').offset().top-$('.pad-div').offset().top-$('.pad-div').height()/2
-    const p=$('[data-cur]').parent()
+    const dc=$('[data-cur]')
+    $('.pad-div')[0].scrollTop+=dc.offset().top-$('.pad-div').offset().top-$('.pad-div').height()/2
+    const p=dc.parent()
     if(!p.hasClass('focusit') && !p.is('code')) {
       p.addClass('focusit')
       setTimeout(_=>p.removeClass('focusit'), 1e3)
     }
+    dc.remove()
   }catch(e) {}
   hl_code($('.pad-div code'))
   updatebtns()
