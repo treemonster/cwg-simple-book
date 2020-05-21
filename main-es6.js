@@ -32,6 +32,7 @@ function showpanel(title, md, cls, fn) {
   $('.pad-div').addClass(cls)
   $('.tit').html(title)
   $('.pad-text').val(md).change()
+  if(!window.FormData) $('.upfile').html('当前浏览器不支持FormData上传文件')
   editfn=fn
 }
 function hidepanel() {
@@ -75,6 +76,59 @@ $(document).on('click', '[data-svid]', async function() {
   }catch(e) {
     alert('网络错误')
   }
+})
+
+
+
+function uploadImage(file, progressCallback) {
+  let _tout=5e3, _t, refleshTout=_=>{
+    clearTimeout(_t)
+    _t=setTimeout(_=>res.reject(new Error('当前网络不佳，请稍后再试')), _tout)
+  }
+
+  try{
+    if(!file || !file.size) throw new Error('图片为空')
+    if(file.size>5*1024*1024-5) throw new Error('图片太大，请上传小于5兆的图片')
+
+    const fd=new FormData
+    fd.append('file', file)
+
+    refleshTout()
+    const b=new XMLHttpRequest
+    b.open('POST','?act=upfile', !0)
+    b.upload.addEventListener('progress', e=> {
+      refleshTout()
+      e.lengthComputable && progressCallback(e.loaded/e.total*.99)
+    }, false)
+    b.onreadystatechange=_=>{
+      refleshTout()
+      if(b.readyState!==4) return
+      clearTimeout(_t)
+      try{
+        progressCallback(1, JSON.parse(b.responseText))
+      }catch(e) {
+        progressCallback(1, new Error('上传失败'))
+      }
+    }
+    b.send(fd)
+  }catch(e) {
+    progressCallback(1, new Error('上传失败'))
+  }
+}
+
+
+$(document).on('change', '#upfile', function() {
+  uploadImage($('#upfile')[0].files[0], (p, d)=>{
+    if(!d || !d.src) return;
+    const {fn_raw, src}=d
+    const srcdata=fn_raw.match(/\.(jpg|png|gif)$/i)? `![${fn_raw}](${src})`: `[${fn_raw}](${src})`
+    const pt=$('.pad-text')
+    const s='\r\n'+srcdata+'\r\n'
+    const pv=pt.val()
+    const ib=pt[0].selectionStart, ie=pt[0].selectionEnd
+    pt.val((ib===undefined||ie===undefined)? pv+s: pv.slice(0, ib)+s+pv.slice(ie, pv.length))
+    pt.change()
+  })
 })
 $(document).on('click', '.title:not(.ro)', function() {
   showpanel('大标题', datas.bigtitle, 'bigtitle', 'bigtitle')

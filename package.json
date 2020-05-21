@@ -11,7 +11,7 @@
   "description": "simple tool to create manual",
   "homepage": "https://github.com/treemonster/cwg-simple-book",
   "main": "index.njs",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "devDependencies": {},
   "scripts": {
     "test": "node test"
@@ -23,6 +23,6 @@
   "bin": {
     "cwg-simple-book": "./bin/cli.js"
   },
-  "author": "",
+  "author": "treemonster",
   "license": "ISC"
 }

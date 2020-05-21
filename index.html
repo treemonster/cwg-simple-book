@@ -58,6 +58,30 @@ if(query.act==='call_svid') {
   echo(await call_svid? call_svid(svid): SVID_HTML+'不存在或未定义module.exports')
   return
 }
+if(query.act==='upfile') {
+  if(!READWRITE) {
+    echo('READONLY')
+    return
+  }
+  const CRLF=Buffer.from('\r\n')
+  let boundary=null
+  const findNext=x=>{
+    const i=postbody.indexOf(x)
+    const b=postbody.slice(0, i)
+    postbody=postbody.slice(i+x.length, postbody.length)
+    return b
+  }
+  boundary=findNext(CRLF)
+  postbody=findNext(Buffer.concat([CRLF, boundary]))
+  const header=findNext(Buffer.concat([CRLF, CRLF]))
+  const fn_raw=header.toString('utf8').match(/filename="([^"]+)"/)[1]
+  const buf=postbody
+  const path=require('path')
+  const fn=BOOK_DIR+'/_upf_'+Date.now().toString(36)+path.parse(fn_raw).ext
+  fs.writeFileSync(fn, buf)
+  echo(JSON.stringify({src: path.resolve(fn).replace(path.resolve(SVR_DIR), '').replace(/\\/g,'/'), fn_raw}))
+  return
+}
 
 const titles=await fread(BOOK_DIR+'/'+queryfn2fn('titles')+'.md')
 const bigtitle=await fread(BOOK_DIR+'/'+queryfn2fn('bigtitle')+'.md') || NO_TITLE
@@ -128,6 +152,9 @@ echo(await es5js(__dirname+'/main-es6.js'))
 <div class="edit">
   <div class="editpad">
     <div class="tit"></div>
+    <div class="upfile">
+      <input type='file' id='upfile' />
+    </div>
     <div class="panel">
       <textarea class="pad-text"></textarea>
       <div class="pad-div"></div>
@@ -141,3 +168,7 @@ echo(await es5js(__dirname+'/main-es6.js'))
 <?js if(!READWRITE) { ?>
 <div class="readonly-tag">-- READONLY --</div>
 <?js } ?>
+<div class="copyright">
+  <div class="l1">cwg-simple-book v<?js echo(PKG.version) ?> | author: <?js echo(PKG.author) ?></div>
+  <div class="l2">repository: <a href="<?js echo(PKG.repository.url) ?>" target="_blank"><?js echo(PKG.repository.url) ?></a></div>
+</div>
