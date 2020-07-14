@@ -259,6 +259,7 @@ h2,h3{
   left: 0;
   top: 60px;
   bottom: 0;
+  z-index: 99;
   h1{
     font-size: 18px;
   }
@@ -296,7 +297,7 @@ h2,h3{
   right: 0;
   bottom: 0;
   background: rgba(2, 2, 3, 0.64);
-  z-index: 11;
+  z-index: 100;
   top: 120%;
   transition: .5s;
   &.show{
