@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "autoprefixer": "^9.7.5",
+    "cwg-package-helper": "^1.0.1",
     "cwg-pre-loader": "^2.0.6",
     "get-port": "^5.1.1",
     "less": "^3.11.1",
@@ -11,17 +12,17 @@
   "description": "simple tool to create manual",
   "homepage": "https://github.com/treemonster/cwg-simple-book",
   "main": "index.njs",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "devDependencies": {},
   "scripts": {
-    "test": "node test"
+    "readme": "node readme"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/treemonster/cwg-simple-book.git"
   },
   "bin": {
-    "cwg-simple-book": "./bin/cli.js"
+    "cbook": "./bin/cli.js"
   },
   "author": "treemonster",
   "license": "ISC"

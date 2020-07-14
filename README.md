@@ -1,4 +1,4 @@
 ```
-$ npm install
-$ node test
+$ npm install -g cwg-simple-book
+$ cbook --readme
 ```

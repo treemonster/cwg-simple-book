@@ -3,13 +3,7 @@
 const simplebook=require('..')
 const openurl=require('openurl')
 const fs=require('fs')
-
-const args={}
-process.argv.slice(2).map(arg=>{
-  arg.replace(/^--(.+?)(?:=(.+))*$/,(_, k, v)=>{
-    args[k.toUpperCase()]=v||true
-  })
-})
+const {logPkgInfo, getArgv}=require('cwg-package-helper')
 
 const mkdir=dir=>{
   try{fs.mkdirSync(dir)}catch(e) {
@@ -39,7 +33,16 @@ module.exports=async svid=> {
 }`
 
 try{
-  const {DIR, PORT, OPEN, READWRITE}=args
+  logPkgInfo(__dirname+'/..')
+  const DIR=getArgv('dir')
+  const PORT=getArgv('port')
+  const OPEN=getArgv('open')
+  const READWRITE=getArgv('readwrite')
+  const README=getArgv('readme')
+  if(README) {
+    require(__dirname+'/../readme')
+    return
+  }
   if(!DIR) throw new Error('没有填写文件目录')
   mkdir(DIR)
   mkdir(DIR+'/md')
