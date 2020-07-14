@@ -57,4 +57,7 @@ try{
     if(OPEN) openurl.open(url)
     console.log('可在浏览器查看: '+url)
   })
-}catch(e) {}
+}catch(e) {
+  console.log('错误：'+e.message)
+  console.log('示例： cbook --readme')
+}
