@@ -9,10 +9,10 @@
     "regenerator": "^0.14.4"
   },
   "name": "cwg-simple-book",
-  "description": "simple tool to create manual",
+  "description": "let users to create manuals quickly and easily",
   "homepage": "https://github.com/treemonster/cwg-simple-book",
   "main": "index.njs",
-  "version": "1.0.13",
+  "version": "1.1.1",
   "devDependencies": {},
   "scripts": {
     "readme": "node readme"
